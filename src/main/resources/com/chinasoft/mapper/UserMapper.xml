@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace 名称空间，指定对哪个接口进行映射-->
+<mapper namespace="com.chinasoft.mapper.UserMapper">
+    <!--
+        select 表示执行查询sql
+            id 唯一； 必须与接口中方法名称一致。
+            resultType 表示执行查询SQL封装的实体类对象。如果放回集合，只需要指定集合中元素的类型即可。
+            标签体中存放要执行的select语句
+    -->
+<!-- 查询所有用户并把对应的角色也查出来
+实现：User到Role的多对多
+-->
+    <resultMap id="findAllUser" type="user">
+        <id property="id" column="id"></id>
+        <result property="username" column="username"></result>
+        <result property="birthday" column="birthday"></result>
+        <result property="sex" column="sex"></result>
+        <result property="address" column="address"></result>
+
+        <collection property="roles" ofType="role">
+            <id property="roleId" column="rid"></id>
+            <result property="role_name" column="role_name"></result>
+            <result property="role_desc" column="role_desc"></result>
+
+        </collection>
+    </resultMap>
+
+    <select id="findAllUsers" resultMap="findAllUser">
+      select
+          u.*,
+          r.id rid,
+          r.role_name,
+          r.role_desc
+         from
+        user u
+        left join user_role ur on u.id = ur.uid
+        left join role r on ur.rid = r.id
+
+    </select>
+</mapper>

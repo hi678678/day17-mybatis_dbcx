@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+
+    <!--日志配置-->
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+<!--       开启驼峰命名自动映射 -->
+        <!--<setting name="mapUnderscoreToCamelCase" value="true"/>-->
+    </settings>
+<!--   配置别名包
+ -->
+
+    <typeAliases>
+
+<!--       别名包   这下面的包 我只需要使用类名，无需使用全限定名-->
+
+        <package name="com.chinasoft.domain"/>
+    </typeAliases>
+    <!--  default 默认使用那个运行环境 -->
+    <environments default="dev">
+        <!--配置dev运行环境-->
+        <environment id="dev">
+            <!--事务管理器：JDBC事务管理-->
+            <transactionManager type="JDBC"></transactionManager>
+            <!--POOLED指定采用mybatis内置的连接池支持-->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"></property>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybaits?serverTimezone=GMT"></property>
+                <property name="username" value="root"></property>
+                <property name="password" value="root"></property>
+            </dataSource>
+        </environment>
+    </environments>
+ 
+    <mappers>
+<!--        加载映射文件-->
+        <mapper resource="com/chinasoft/mapper/EmpMapper.xml"></mapper>
+        <mapper resource="com/chinasoft/mapper/DeptMapper.xml"></mapper>
+        <mapper resource="com/chinasoft/mapper/UserMapper.xml"></mapper>
+        <mapper resource="com/chinasoft/mapper/RoleMapper.xml"></mapper>
+
+    </mappers>
+</configuration>

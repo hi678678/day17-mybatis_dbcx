@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace 名称空间，指定对哪个接口进行映射-->
+<mapper namespace="com.chinasoft.mapper.EmpMapper">
+
+<!--  查询所有员工信息，关联所属的部门信息，即使有的员工还没有部门也要查询这个员工的信息
+  员工是主表
+  -->
+<!--  type 实体类的类型  -->
+    <resultMap id="findEmp" type="emp">
+        <id column="eId" property="id"></id>
+        <result property="name" column="empName"></result>
+        <result property="addr" column="addr"></result>
+        <result property="age" column="age"></result>
+        <result property="salary" column="salary"></result>
+<!--   property 所对应的实体类字段    javaType 该字段对应的类型 -->
+        <association property="dept" javaType="com.chinasoft.domain.Dept">
+            <id column="deptId" property="id"></id>
+            <result column="deptName" property="name"></result>
+            <result column="location" property="location"></result>
+        </association>
+    </resultMap>
+
+    <select id="findAll" resultMap="findEmp">
+        select e.id eId,
+               e.name empName,
+               e.addr,
+               e.age,
+               e.salary ,
+               d.id deptId,
+               d.name deptName,
+               d.location
+        from emp e  left join  dept d on e.dept_id=d.id
+    </select>
+</mapper>
